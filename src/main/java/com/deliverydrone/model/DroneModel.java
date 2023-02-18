@@ -19,7 +19,7 @@ public class DroneModel {
   private String name;
 
   @Column(name = "weight_limit_grams", nullable = false)
-  private float weightLimitInGrams;
+  private Float weightLimitInGrams;
 
   public Long getId() {
     return id;
@@ -41,7 +41,7 @@ public class DroneModel {
     return weightLimitInGrams;
   }
 
-  public void setWeightLimitInGrams(float weightLimitInGrams) {
+  public void setWeightLimitInGrams(Float weightLimitInGrams) {
     this.weightLimitInGrams = weightLimitInGrams;
   }
 

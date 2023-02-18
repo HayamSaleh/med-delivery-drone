@@ -17,7 +17,7 @@ CREATE TABLE `drone` (
     `serial_number` VARCHAR(100) NOT NULL,
 	`model_id` INTEGER NOT NULL,
 	`current_state_id` INTEGER NOT NULL,
-	`battery_current_capacity` DECIMAL(10, 3) NOT NULL,
+	`battery_current_capacity` FLOAT NOT NULL,
 	PRIMARY KEY (id),
 	CONSTRAINT FK_droneModel FOREIGN KEY (model_id) REFERENCES drone_model(id),
 	CONSTRAINT FK_droneState FOREIGN KEY (current_state_id) REFERENCES drone_state(id)

@@ -1,10 +1,10 @@
 package com.deliverydrone.dto;
 
-public class DroneModelDto {
+public class DroneStateDto {
 
   private Long id;
+
   private String name;
-  private Float weightLimitInGrams;
 
   public Long getId() {
     return id;
@@ -22,11 +22,4 @@ public class DroneModelDto {
     this.name = name;
   }
 
-  public Float getWeightLimitInGrams() {
-    return weightLimitInGrams;
-  }
-
-  public void setWeightLimitInGrams(Float weightLimitInGrams) {
-    this.weightLimitInGrams = weightLimitInGrams;
-  }
 }
