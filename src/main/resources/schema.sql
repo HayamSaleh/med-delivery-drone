@@ -6,21 +6,14 @@ CREATE TABLE `drone_model` (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE `drone_state` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NOT NULL unique,
-	PRIMARY KEY (id)
-);
-
 CREATE TABLE `drone` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
     `serial_number` VARCHAR(100) NOT NULL,
 	`model_id` INTEGER NOT NULL,
-	`current_state_id` INTEGER NOT NULL,
-	`battery_current_capacity` FLOAT NOT NULL,
+	`state` ENUM('IDLE', 'LOADING', 'LOADED', 'DELIVERING', 'DELIVERED', 'RETURNING') NOT NULL DEFAULT 'IDLE',
+	`battery_current_capacity` FLOAT NOT NULL DEFAULT 100,
 	PRIMARY KEY (id),
-	CONSTRAINT FK_droneModel FOREIGN KEY (model_id) REFERENCES drone_model(id),
-	CONSTRAINT FK_droneState FOREIGN KEY (current_state_id) REFERENCES drone_state(id)
+	CONSTRAINT FK_droneModel FOREIGN KEY (model_id) REFERENCES drone_model(id)
 );
 
 CREATE TABLE `medication` (
@@ -36,9 +29,9 @@ CREATE TABLE `medication` (
 CREATE TABLE delivery (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `drone_id` BIGINT NOT NULL,
-  `start_time` TIMESTAMP NOT NULL,
-  `end_time` TIMESTAMP,
-  `delivery_status` ENUM('PENDING', 'IN_PROGRESS', 'DELIVERED') NOT NULL,
+  `start_time` DATE NOT NULL,
+  `end_time` DATE,
+  `delivery_state` ENUM('LOADING', 'LOADED', 'IN_PROGRESS', 'DELIVERED') NOT NULL,
   PRIMARY KEY (id),	
   CONSTRAINT FK_deliveryDrone FOREIGN KEY (drone_id) REFERENCES drone(id)
 );

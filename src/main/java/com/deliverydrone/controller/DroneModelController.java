@@ -16,7 +16,7 @@ import com.deliverydrone.dto.DroneModelDto;
 import com.deliverydrone.service.DroneModelService;
 
 @RestController
-@RequestMapping("/api/droneModel")
+@RequestMapping("/droneModel")
 public class DroneModelController {
 
   @Autowired
@@ -31,7 +31,6 @@ public class DroneModelController {
   public ResponseEntity<DroneModelDto> getDroneModelById(@PathVariable Long id) {
     return new ResponseEntity<>(droneModelService.getDroneModelById(id), HttpStatus.OK);
   }
-
 
   @PostMapping()
   public ResponseEntity<DroneModelDto> addDroneModel(@RequestBody DroneModelDto droneModel) {
@@ -48,6 +47,5 @@ public class DroneModelController {
   public ResponseEntity<Boolean> deleteDrone(@PathVariable Long id) {
     return new ResponseEntity<>(droneModelService.deleteDroneModel(id), HttpStatus.OK);
   }
-
 
 }

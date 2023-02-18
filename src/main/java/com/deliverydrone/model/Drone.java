@@ -2,12 +2,15 @@ package com.deliverydrone.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.deliverydrone.enms.DroneState;
 
 @Entity
 @Table(name = "drone")
@@ -24,11 +27,12 @@ public class Drone {
   @JoinColumn(name = "model_id", referencedColumnName = "id", nullable = false)
   private DroneModel model;
 
+
   @Column(name = "battery_current_capacity", nullable = false)
   private Double batteryCurrentCapacity;
 
-  @ManyToOne
-  @JoinColumn(name = "current_state_id", referencedColumnName = "id", nullable = false)
+  @Enumerated(EnumType.STRING)
+  @Column(name = "state", nullable = false)
   private DroneState currentState;
 
   public Drone() {

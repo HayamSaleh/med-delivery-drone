@@ -1,5 +1,6 @@
 package com.deliverydrone.controller.exception;
 
+import javax.activity.InvalidActivityException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   @ExceptionHandler(EntityExistsException.class)
   public ResponseEntity<String> handleEntityExistsException(EntityExistsException e) {
     return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+  }
+
+
+  @ExceptionHandler(InvalidActivityException.class)
+  public ResponseEntity<String> handleInvalidActivityException(InvalidActivityException e) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
   }
 
 }

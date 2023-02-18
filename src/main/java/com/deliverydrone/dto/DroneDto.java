@@ -1,12 +1,22 @@
 package com.deliverydrone.dto;
 
+import com.deliverydrone.enms.DroneState;
+
 public class DroneDto {
 
   private Long id;
   private String serialNumber;
   private DroneModelDto model;
   private Double batteryCurrentCapacity;
-  private DroneStateDto currentState;
+  private DroneState currentState;
+
+  public DroneDto() {
+    super();
+  }
+
+  public DroneDto(Long id) {
+    this.id = id;
+  }
 
   public Long getId() {
     return id;
@@ -40,11 +50,11 @@ public class DroneDto {
     this.batteryCurrentCapacity = batteryCurrentCapacity;
   }
 
-  public DroneStateDto getCurrentState() {
+  public DroneState getCurrentState() {
     return currentState;
   }
 
-  public void setCurrentState(DroneStateDto currentState) {
+  public void setCurrentState(DroneState currentState) {
     this.currentState = currentState;
   }
 

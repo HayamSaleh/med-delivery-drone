@@ -1,7 +1,7 @@
 package com.deliverydrone.model;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import com.deliverydrone.enms.DeliveryState;
 
 @Entity
 @Table(name = "delivery")
@@ -33,14 +34,14 @@ public class Delivery {
   private List<DeliveryMedication> deliveryMedication = new ArrayList<>();
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "delivery_status", nullable = false)
+  @Column(name = "delivery_state", nullable = false)
   private DeliveryState deliveryState;
 
   @Column(name = "start_time", nullable = false)
-  private Timestamp startTime;
+  private Date startTime;
 
   @Column(name = "end_time")
-  private Timestamp endTime;
+  private Date endTime;
 
   public Long getId() {
     return id;
@@ -74,19 +75,19 @@ public class Delivery {
     this.deliveryState = deliveryState;
   }
 
-  public Timestamp getStartTime() {
+  public Date getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(Timestamp startTime) {
+  public void setStartTime(Date startTime) {
     this.startTime = startTime;
   }
 
-  public Timestamp getEndTime() {
+  public Date getEndTime() {
     return endTime;
   }
 
-  public void setEndTime(Timestamp endTime) {
+  public void setEndTime(Date endTime) {
     this.endTime = endTime;
   }
 
