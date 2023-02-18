@@ -1,7 +1,6 @@
 package com.deliverydrone.controller;
 
 import java.util.List;
-import javax.naming.directory.InvalidAttributeValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +54,7 @@ public class DroneController {
 
   @PutMapping("/{id}/updateState")
   public ResponseEntity<DroneDto> updateDroneState(@RequestBody String droneState,
-      @PathVariable Long id) throws InvalidAttributeValueException {
+      @PathVariable Long id) {
     return new ResponseEntity<>(droneService.updateDroneState(droneState, id), HttpStatus.OK);
   }
 

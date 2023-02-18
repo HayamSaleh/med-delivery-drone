@@ -2,10 +2,10 @@ package com.deliverydrone.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.deliverydrone.controller.exception.DeliveryNotFoundException;
 import com.deliverydrone.dto.DeliveryDto;
 import com.deliverydrone.dto.DeliveryMedicationDto;
 import com.deliverydrone.dto.DroneDto;
@@ -20,17 +20,6 @@ import com.deliverydrone.utils.MapperUtils;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
-
-
-  private static final int MIN_ALLOWED_BATTARY_TO_BE_LOADED = 25;
-
-  private static final String DRONE_CURRENTLY_BUSY =
-      "The requested drone is currently busy with another delivery request";
-
-
-  private static final String NO_DELIVERY_FOR_THE_DRONE_IS_READY_TO_BE_DELIVERED = null;
-  private static final String DELIVERY_LOADING_IS_STILL_IN_PROGRESS = null;
-  private static final String THERE_IS_NO_DELIVERY_OUT_FOR_DELIVERY_WITH_THIS_ID = null;
 
   @Autowired
   private DozerBeanMapper mapper;
@@ -65,8 +54,7 @@ public class DeliveryServiceImpl implements DeliveryService {
       return saveDelivery(new DeliveryDto(null, droneDto, DeliveryState.LOADING, new Date()));
     }
 
-    // create custom exception
-    throw new EntityNotFoundException(DRONE_CURRENTLY_BUSY);
+    throw new DeliveryNotFoundException(String.format(UNAVAILABLE_DRONE, droneId));
   }
 
   private boolean isDroneAvailableForNewDelivery(DroneDto droneDto) {
@@ -93,7 +81,7 @@ public class DeliveryServiceImpl implements DeliveryService {
       return true;
     }
 
-    throw new EntityNotFoundException(DELIVERY_LOADING_IS_STILL_IN_PROGRESS);
+    throw new IllegalStateException(EMPTY_DELIVERY);
   }
 
   @Override
@@ -105,13 +93,13 @@ public class DeliveryServiceImpl implements DeliveryService {
       deliveryRepository.save(delivery);
       return true;
     }
-    throw new EntityNotFoundException(THERE_IS_NO_DELIVERY_OUT_FOR_DELIVERY_WITH_THIS_ID);
+    throw new DeliveryNotFoundException(String.format(NO_OUT_FOR_DELIVERY, deliveryId));
   }
 
   private Delivery getDeliveryById(Long deliveryId) {
     Delivery delivery = deliveryRepository.findById(deliveryId).orElse(null);
     if (delivery == null) {
-      throw new EntityNotFoundException(NO_DELIVERY_FOR_THE_DRONE_IS_READY_TO_BE_DELIVERED);
+      throw new DeliveryNotFoundException(deliveryId);
     }
     return delivery;
   }

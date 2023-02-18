@@ -1,11 +1,11 @@
 package com.deliverydrone.service.impl;
 
 import java.util.List;
-import javax.naming.directory.InvalidAttributeValueException;
-import javax.persistence.EntityNotFoundException;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.deliverydrone.controller.exception.DroneNotFoundException;
+import com.deliverydrone.controller.exception.NotAllowedRequestException;
 import com.deliverydrone.dto.DroneDto;
 import com.deliverydrone.enms.DroneState;
 import com.deliverydrone.model.Drone;
@@ -17,8 +17,7 @@ import com.deliverydrone.utils.MapperUtils;
 @Service
 public class DroneServiceImpl implements DroneService {
 
-
-  private static final String NO_DRONE_STATE_FOUND_WITH_VALUE = null;
+  private static final String NOT_ALLOWED_DRONE_STATE = "Drone State %d is not allowed";
 
   @Autowired
   private DozerBeanMapper dozerMapper;
@@ -48,13 +47,13 @@ public class DroneServiceImpl implements DroneService {
   private Drone getDroneEntityByID(Long id) {
     Drone drone = droneRepository.findById(id).orElse(null);
     if (drone == null) {
-      throw new EntityNotFoundException(DRONE_NOT_FOUND);
+      throw new DroneNotFoundException(id);
     }
     return drone;
   }
 
   @Override
-  public Double checkDroneBatteryLevelById(Long id) throws EntityNotFoundException {
+  public Double checkDroneBatteryLevelById(Long id) {
     DroneDto drone = getDroneById(id);
     return drone.getBatteryCurrentCapacity();
   }
@@ -66,7 +65,7 @@ public class DroneServiceImpl implements DroneService {
   }
 
   @Override
-  public DroneDto updateDrone(DroneDto droneDto, Long id) throws EntityNotFoundException {
+  public DroneDto updateDrone(DroneDto droneDto, Long id) {
     Drone existingDrone = getDroneEntityByID(id);
     existingDrone.setSerialNumber(droneDto.getSerialNumber());
     existingDrone.setBatteryCurrentCapacity(droneDto.getBatteryCurrentCapacity());
@@ -77,17 +76,20 @@ public class DroneServiceImpl implements DroneService {
   }
 
   @Override
-  public DroneDto updateDroneState(String droneState, Long id)
-      throws InvalidAttributeValueException {
-    DroneState updatedDroneState = DroneState.valueOf(droneState);
-    if (updatedDroneState == null) {
-      throw new InvalidAttributeValueException(NO_DRONE_STATE_FOUND_WITH_VALUE + ": " + droneState);
-    }
-
+  public DroneDto updateDroneState(String droneState, Long id) {
+    DroneState updatedDroneState = getDroneState(droneState);
     Drone existingDrone = getDroneEntityByID(id);
     existingDrone.setCurrentState(updatedDroneState);
 
     return dozerMapper.map(droneRepository.save(existingDrone), DroneDto.class);
+  }
+
+  private DroneState getDroneState(String droneState) {
+    try {
+      return DroneState.valueOf(droneState.toUpperCase());
+    } catch (IllegalArgumentException ex) {
+      throw new NotAllowedRequestException(String.format(NOT_ALLOWED_DRONE_STATE, droneState));
+    }
   }
 
   @Override
@@ -97,7 +99,7 @@ public class DroneServiceImpl implements DroneService {
       return true;
     }
 
-    throw new EntityNotFoundException(DRONE_NOT_FOUND);
+    throw new DroneNotFoundException(id);
   }
 
 }

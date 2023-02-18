@@ -2,11 +2,11 @@ package com.deliverydrone.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import javax.activity.InvalidActivityException;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import com.deliverydrone.controller.exception.NotAllowedRequestException;
 import com.deliverydrone.dto.DeliveryDto;
 import com.deliverydrone.dto.DeliveryMedicationDto;
 import com.deliverydrone.dto.DroneDto;
@@ -20,12 +20,6 @@ import com.deliverydrone.service.LoadingService;
 @Service
 public class LoadingServiceImpl implements LoadingService {
 
-  private static final int MIN_ALLOWED_BATTARY_TO_BE_LOADED = 25;
-
-  private static final String DRONE_BATTARY_UNDER_OK_LIMIT = null;
-
-  private static final String EMPTY_DRONE = null;
-
   @Autowired
   private DozerBeanMapper mapper;
 
@@ -37,7 +31,7 @@ public class LoadingServiceImpl implements LoadingService {
 
   @Override
   public void bulkLoadMedicationByDroneId(Long droneId,
-      List<DeliveryMedicationDto> deliveryMedicationsDtos) throws InvalidActivityException {
+      List<DeliveryMedicationDto> deliveryMedicationsDtos) {
     Delivery delivery =
         deliveryRepository.findByDroneIdAndDeliveryState(droneId, DeliveryState.LOADING);
     DeliveryDto deliveryDto = delivery == null ? deliveryService.createDelivery(droneId)
@@ -48,27 +42,27 @@ public class LoadingServiceImpl implements LoadingService {
       // is drone data updated
       deliveryRepository.save(mapper.map(deliveryDto, Delivery.class));
     } else {
-      throw new InvalidActivityException(DRONE_BATTARY_UNDER_OK_LIMIT);
+      throw new NotAllowedRequestException(
+          String.format(DRONE_BATTARY_UNDER_SAFE_LIMIT, MIN_SAFE_BATTARY));
     }
   }
 
   @Override
-  public void loadMedicationByDroneId(Long droneId, DeliveryMedicationDto deliveryMedicationsDto)
-      throws InvalidActivityException {
+  public void loadMedicationByDroneId(Long droneId, DeliveryMedicationDto deliveryMedicationsDto) {
     bulkLoadMedicationByDroneId(droneId, Arrays.asList(deliveryMedicationsDto));
   }
 
   private boolean isDroneBatteryLevelSafeToBeLoaded(DroneDto droneDto) {
-    return droneDto.getBatteryCurrentCapacity() >= MIN_ALLOWED_BATTARY_TO_BE_LOADED;
+    return droneDto.getBatteryCurrentCapacity() >= MIN_SAFE_BATTARY;
   }
 
   @Override
-  public void endLoadingByDroneId(Long droneId) throws InvalidActivityException {
+  public void endLoadingByDroneId(Long droneId) {
     Delivery delivery =
         deliveryRepository.findByDroneIdAndDeliveryState(droneId, DeliveryState.LOADING);
 
     if (CollectionUtils.isEmpty(delivery.getDeliveryMedication())) {
-      throw new InvalidActivityException(EMPTY_DRONE);
+      throw new IllegalStateException(DeliveryService.EMPTY_DELIVERY);
     }
 
     delivery.setDeliveryState(DeliveryState.LOADED);

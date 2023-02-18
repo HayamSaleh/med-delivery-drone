@@ -20,7 +20,7 @@ public class LoadingController {
 
   @PostMapping("/{droneId}/loading")
   public ResponseEntity<Void> loadMedicationByDroneId(@PathVariable Long droneId,
-      @RequestBody DeliveryMedicationDto deliveryMedicationDto) throws InvalidActivityException {
+      @RequestBody DeliveryMedicationDto deliveryMedicationDto) {
     loadingService.loadMedicationByDroneId(droneId, deliveryMedicationDto);
     return new ResponseEntity<>(HttpStatus.OK);
   }
@@ -34,8 +34,7 @@ public class LoadingController {
   }
 
   @PostMapping("/{droneId}/loaded")
-  public ResponseEntity<Void> endMedicationsLoadingByDroneId(@PathVariable Long droneId)
-      throws InvalidActivityException {
+  public ResponseEntity<Void> endMedicationsLoadingByDroneId(@PathVariable Long droneId) {
     loadingService.endLoadingByDroneId(droneId);
     return new ResponseEntity<>(HttpStatus.OK);
   }
