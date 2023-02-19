@@ -21,7 +21,7 @@ public class Medication {
   private String name;
 
   @Column(name = "weight_grams", nullable = false)
-  private Double weightInGrams;
+  private Float weightInGrams;
 
   @Column(name = "code", unique = true, nullable = false)
   private String code;
@@ -46,11 +46,11 @@ public class Medication {
 	this.name = name;
   }
 
-  public Double getWeightInGrams() {
+  public Float getWeightInGrams() {
 	return weightInGrams;
   }
 
-  public void setWeightInGrams(Double weightInGrams) {
+  public void setWeightInGrams(Float weightInGrams) {
 	this.weightInGrams = weightInGrams;
   }
 

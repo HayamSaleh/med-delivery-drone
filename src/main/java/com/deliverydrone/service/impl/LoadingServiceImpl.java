@@ -48,12 +48,28 @@ public class LoadingServiceImpl implements LoadingService {
 		throw new MedicationNotFoundException("The required Medications are not found");
 	  }
 
-	  deliveryDto.getDeliveryMedication().addAll(filteredDeliveryMedications);
+	  List<DeliveryMedicationDto> deliveryMedication = deliveryDto.getDeliveryMedication();
+	  deliveryMedication.addAll(filteredDeliveryMedications);
+
+	  Float currentDroneWeight = calculateDeliveryWeight(deliveryMedication);
+	  if (currentDroneWeight.equals(deliveryDto.getDrone().getModel().getWeightLimitInGrams())) {
+		throw new NotAllowedRequestException(
+			"Cannot add the requested medications, as it will exceed the weight limit of the drone.");
+	  }
+
 	  deliveryRepository.save(mapper.map(deliveryDto, Delivery.class));
 	  return;
 	}
 
 	throw new NotAllowedRequestException(String.format(DRONE_BATTARY_UNDER_SAFE_LIMIT, MIN_SAFE_BATTARY));
+  }
+
+  private Float calculateDeliveryWeight(List<DeliveryMedicationDto> medications) {
+	Float currentDroneWeight = (float) 0;
+	for (DeliveryMedicationDto medication : medications) {
+	  currentDroneWeight += medication.getQuantity() * medication.getMedication().getWeightInGrams();
+	}
+	return currentDroneWeight;
   }
 
   @Override

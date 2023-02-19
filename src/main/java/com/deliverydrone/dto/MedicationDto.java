@@ -7,7 +7,7 @@ public class MedicationDto {
   private Long id;
   @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
   private String name;
-  private Double weightInGrams;
+  private Float weightInGrams;
   private String code;
   private byte[] image;
 
@@ -27,11 +27,11 @@ public class MedicationDto {
 	this.name = name;
   }
 
-  public Double getWeightInGrams() {
+  public Float getWeightInGrams() {
 	return weightInGrams;
   }
 
-  public void setWeightInGrams(Double weightInGrams) {
+  public void setWeightInGrams(Float weightInGrams) {
 	this.weightInGrams = weightInGrams;
   }
 
