@@ -1,6 +1,7 @@
 package com.deliverydrone.controller;
 
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.deliverydrone.controller.exception.EntityAlreadyExistsException;
-import com.deliverydrone.controller.exception.MedicationNotFoundException;
+
 import com.deliverydrone.dto.MedicationDto;
 import com.deliverydrone.service.MedicationService;
 
@@ -23,38 +23,33 @@ public class MedicationController {
   private final MedicationService medicationService;
 
   public MedicationController(MedicationService medicationService) {
-    this.medicationService = medicationService;
+	this.medicationService = medicationService;
   }
 
   @GetMapping
   public ResponseEntity<List<MedicationDto>> getAllMedications() {
-    return new ResponseEntity<>(medicationService.getAllMedications(), HttpStatus.OK);
+	return new ResponseEntity<>(medicationService.getAllMedications(), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<MedicationDto> getMedicationById(@PathVariable Long id)
-      throws MedicationNotFoundException {
-    return new ResponseEntity<>(medicationService.getMedicationById(id), HttpStatus.OK);
+  public ResponseEntity<MedicationDto> getMedicationById(@PathVariable Long id) {
+	return new ResponseEntity<>(medicationService.getMedicationById(id), HttpStatus.OK);
   }
 
   @PostMapping
-  public ResponseEntity<MedicationDto> addMedication(@RequestBody MedicationDto medication)
-      throws EntityAlreadyExistsException {
-    return new ResponseEntity<>(medicationService.addMedication(medication), HttpStatus.CREATED);
+  public ResponseEntity<MedicationDto> addMedication(@RequestBody MedicationDto medication) {
+	return new ResponseEntity<>(medicationService.addMedication(medication), HttpStatus.CREATED);
 
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<MedicationDto> updateMedication(@RequestBody MedicationDto medication,
-      @PathVariable Long id) throws MedicationNotFoundException {
-    return new ResponseEntity<>(medicationService.updateMedication(medication, id), HttpStatus.OK);
+  public ResponseEntity<MedicationDto> updateMedication(@RequestBody MedicationDto medication, @PathVariable Long id) {
+	return new ResponseEntity<>(medicationService.updateMedication(medication, id), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteMedication(@PathVariable Long id)
-      throws MedicationNotFoundException {
-    medicationService.deleteMedication(id);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  public ResponseEntity<Void> deleteMedication(@PathVariable Long id) {
+	medicationService.deleteMedication(id);
+	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }
-

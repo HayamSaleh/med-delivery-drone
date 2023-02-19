@@ -8,6 +8,7 @@ public interface MedicationLoadingService {
 
   static final float MIN_SAFE_BATTARY = 25f;
   static final String DRONE_BATTARY_UNDER_SAFE_LIMIT = "The drone's battery is below the minimum safe level for flight (%d%%). Please return the drone for recharging and try again later.";
+  static final String NO_DRONE_READY_DELIVERY = "The Drone with id %d does not have any ready deliveries.";
 
   boolean bulkLoadMedicationByDroneId(Long id, List<DeliveryMedicationDto> deliveryMedicationsDtos);
 

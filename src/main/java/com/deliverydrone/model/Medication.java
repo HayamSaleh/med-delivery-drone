@@ -16,7 +16,7 @@ public class Medication {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "name", unique = true, nullable = false)
+  @Column(name = "name", nullable = false)
   @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
   private String name;
 

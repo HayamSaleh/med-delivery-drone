@@ -13,7 +13,7 @@ import com.deliverydrone.service.DroneService;
 
 @Component
 public class DroneBatteryCheckTask {
-  private static final String BATTERY_LOG_MESSAGE = "Drone %d with serial number %s battery level:  %.0f";
+  private static final String BATTERY_LOG_MESSAGE = "Drone %d with serial number %s battery level: %.0f";
   private static final int BATTERY_WARNING_THRESHOLD = 300000;
   private static final Logger LOGGER = LoggerFactory.getLogger(DroneBatteryCheckTask.class);
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.deliverydrone.controller.exception.EntityAlreadyExistsException;
 import com.deliverydrone.controller.exception.MedicationNotFoundException;
+import com.deliverydrone.controller.exception.NotAllowedRequestException;
 import com.deliverydrone.dto.MedicationDto;
 import com.deliverydrone.model.Medication;
 import com.deliverydrone.repository.MedicationRepository;
@@ -46,8 +47,14 @@ public class MedicationServiceImpl implements MedicationService {
 
   @Override
   public MedicationDto addMedication(MedicationDto medicationDto) {
-	if (medicationRepository.existsByCode(medicationDto.getCode())) {
+	String medicationCode = medicationDto.getCode();
+	if (medicationRepository.existsByCode(medicationCode)) {
 	  throw new EntityAlreadyExistsException(MEDICATION_WITH_SAME_CODE_EXISTS);
+	}
+
+	if (!medicationCode.matches(MEDICATION_COEE_PATTERN)) {
+	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_CODE);
+
 	}
 
 	Medication savedMedication = medicationRepository.save(dozerMapper.map(medicationDto, Medication.class));

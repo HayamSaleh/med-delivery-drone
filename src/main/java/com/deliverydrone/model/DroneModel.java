@@ -22,27 +22,27 @@ public class DroneModel {
   private Float weightLimitInGrams;
 
   public Long getId() {
-    return id;
+	return id;
   }
 
   public void setId(Long id) {
-    this.id = id;
+	this.id = id;
   }
 
   public String getName() {
-    return name;
+	return name;
   }
 
   public void setName(String name) {
-    this.name = name;
+	this.name = name;
   }
 
-  public float getWeightLimitInGrams() {
-    return weightLimitInGrams;
+  public Float getWeightLimitInGrams() {
+	return weightLimitInGrams;
   }
 
   public void setWeightLimitInGrams(Float weightLimitInGrams) {
-    this.weightLimitInGrams = weightLimitInGrams;
+	this.weightLimitInGrams = weightLimitInGrams;
   }
 
 }

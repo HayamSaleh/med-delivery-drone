@@ -3,88 +3,85 @@ package com.deliverydrone.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import com.deliverydrone.enms.DeliveryState;
 
 public class DeliveryDto {
 
   private Long id;
-
   private DroneDto drone;
-
-  private List<DeliveryMedicationDto> deliveryMedication = new ArrayList<>();
-
+  private List<DeliveryMedicationDto> deliveryMedications = new ArrayList<>();
   private DeliveryState deliveryState;
-
   private Date startTime;
-
   private Date endTime;
 
-  public DeliveryDto(Long id, DroneDto drone, DeliveryState deliveryState, Date startTime) {
-    super();
-    this.id = id;
-    this.drone = drone;
-    this.deliveryState = deliveryState;
-    this.startTime = startTime;
+  public DeliveryDto() {
+	super();
   }
 
-  public DeliveryDto(Long id, DroneDto drone, List<DeliveryMedicationDto> deliveryMedication,
-      DeliveryState deliveryState, Date startTime) {
-    this(id, drone, deliveryState, startTime);
-    this.deliveryMedication = deliveryMedication;
+  public DeliveryDto(DroneDto drone, DeliveryState deliveryState, Date startTime) {
+	super();
+	this.drone = drone;
+	this.deliveryState = deliveryState;
+	this.startTime = startTime;
   }
 
-  public DeliveryDto(Long droneId) {
-    this.drone = new DroneDto(droneId);
+  public DeliveryDto(DroneDto drone, List<DeliveryMedicationDto> deliveryMedications, DeliveryState deliveryState,
+	  Date startTime) {
+	this(drone, deliveryState, startTime);
+	this.deliveryMedications = deliveryMedications;
+  }
+
+  public DeliveryDto(Long id) {
+	this.id = id;
   }
 
   public Long getId() {
-    return id;
+	return id;
   }
 
   public void setId(Long id) {
-    this.id = id;
+	this.id = id;
   }
 
   public DroneDto getDrone() {
-    return drone;
+	return drone;
   }
 
   public void setDrone(DroneDto drone) {
-    this.drone = drone;
+	this.drone = drone;
   }
 
-  public List<DeliveryMedicationDto> getDeliveryMedication() {
-    return deliveryMedication;
+  public List<DeliveryMedicationDto> getDeliveryMedications() {
+	return deliveryMedications;
   }
 
-  public void setDeliveryMedication(List<DeliveryMedicationDto> deliveryMedication) {
-    this.deliveryMedication = deliveryMedication;
+  public void setDeliveryMedications(List<DeliveryMedicationDto> deliveryMedications) {
+	this.deliveryMedications = deliveryMedications;
   }
 
   public DeliveryState getDeliveryState() {
-    return deliveryState;
+	return deliveryState;
   }
 
   public void setDeliveryState(DeliveryState deliveryState) {
-    this.deliveryState = deliveryState;
+	this.deliveryState = deliveryState;
   }
 
   public Date getStartTime() {
-    return startTime;
+	return startTime;
   }
 
   public void setStartTime(Date startTime) {
-    this.startTime = startTime;
+	this.startTime = startTime;
   }
 
   public Date getEndTime() {
-    return endTime;
+	return endTime;
   }
 
   public void setEndTime(Date endTime) {
-    this.endTime = endTime;
+	this.endTime = endTime;
   }
-
-
 
 }

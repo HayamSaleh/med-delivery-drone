@@ -17,7 +17,7 @@ public class DeliveryMedication {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "delivery_id")
   private Delivery delivery;
 
@@ -29,34 +29,34 @@ public class DeliveryMedication {
   private Integer quantity;
 
   public Long getId() {
-    return id;
+	return id;
   }
 
   public void setId(Long id) {
-    this.id = id;
+	this.id = id;
   }
 
   public Delivery getDelivery() {
-    return delivery;
+	return delivery;
   }
 
   public void setDelivery(Delivery delivery) {
-    this.delivery = delivery;
+	this.delivery = delivery;
   }
 
   public Medication getMedication() {
-    return medication;
+	return medication;
   }
 
   public void setMedication(Medication medication) {
-    this.medication = medication;
+	this.medication = medication;
   }
 
   public Integer getQuantity() {
-    return quantity;
+	return quantity;
   }
 
   public void setQuantity(Integer quantity) {
-    this.quantity = quantity;
+	this.quantity = quantity;
   }
 }

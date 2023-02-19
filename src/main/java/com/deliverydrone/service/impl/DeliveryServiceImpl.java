@@ -51,7 +51,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	DroneDto droneDto = droneService.getDroneById(droneId);
 	if (isDroneAvailableForNewDelivery(droneDto)) {
 	  droneDto.setCurrentState(DroneState.LOADING);
-	  return saveDelivery(new DeliveryDto(null, droneDto, DeliveryState.LOADING, new Date()));
+	  return saveDelivery(new DeliveryDto(droneDto, DeliveryState.LOADING, new Date()));
 	}
 
 	throw new DeliveryNotFoundException(String.format(UNAVAILABLE_DRONE, droneId));
@@ -67,7 +67,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 
   private DeliveryDto saveDelivery(DeliveryDto deliveryDto) {
 	Delivery delivery = mapper.map(deliveryDto, Delivery.class);
-	return mapper.map(deliveryRepository.save(delivery), DeliveryDto.class);
+	Delivery savedDelivery = deliveryRepository.save(delivery);
+	return mapper.map(savedDelivery, DeliveryDto.class);
   }
 
   @Override
@@ -89,6 +90,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	if (DeliveryState.IN_PROGRESS.equals(delivery.getDeliveryState())) {
 	  delivery.setDeliveryState(DeliveryState.DELIVERED);
 	  delivery.getDrone().setCurrentState(DroneState.DELIVERED);
+	  delivery.setEndTime(new Date());
 	  deliveryRepository.save(delivery);
 	  return true;
 	}
