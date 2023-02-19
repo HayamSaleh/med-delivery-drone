@@ -11,7 +11,7 @@ CREATE TABLE `drone` (
     `serial_number` VARCHAR(100) NOT NULL,
 	`model_id` INTEGER NOT NULL,
 	`state` ENUM('IDLE', 'LOADING', 'LOADED', 'DELIVERING', 'DELIVERED', 'RETURNING') NOT NULL DEFAULT 'IDLE',
-	`battery_current_capacity` FLOAT NOT NULL DEFAULT 100,
+	`battery_level` FLOAT NOT NULL DEFAULT 100,
 	PRIMARY KEY (id),
 	CONSTRAINT FK_droneModel FOREIGN KEY (model_id) REFERENCES drone_model(id)
 );

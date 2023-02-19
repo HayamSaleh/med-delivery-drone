@@ -1,7 +1,9 @@
 package com.deliverydrone.service;
 
 import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
+
 import com.deliverydrone.dto.DroneDto;
 
 public interface DroneService {
@@ -12,7 +14,7 @@ public interface DroneService {
 
   DroneDto getDroneById(Long id);
 
-  Double checkDroneBatteryLevelById(Long id);
+  Float checkDroneBatteryLevelById(Long id);
 
   DroneDto addDrone(DroneDto drone);
 

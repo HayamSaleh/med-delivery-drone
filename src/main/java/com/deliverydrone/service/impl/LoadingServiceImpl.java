@@ -100,7 +100,7 @@ public class LoadingServiceImpl implements LoadingService {
   }
 
   private boolean isDroneBatteryLevelSafeToBeLoaded(DroneDto droneDto) {
-	return droneDto.getBatteryCurrentCapacity() >= MIN_SAFE_BATTARY;
+	return droneDto.getBatteryLevel() >= MIN_SAFE_BATTARY;
   }
 
   @Override

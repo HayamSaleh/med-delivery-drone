@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import com.deliverydrone.enms.DroneState;
 
 @Entity
@@ -27,60 +28,59 @@ public class Drone {
   @JoinColumn(name = "model_id", referencedColumnName = "id", nullable = false)
   private DroneModel model;
 
-
-  @Column(name = "battery_current_capacity", nullable = false)
-  private Double batteryCurrentCapacity;
+  @Column(name = "battery_level", nullable = false)
+  private Float batteryLevel;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "state", nullable = false)
   private DroneState currentState;
 
   public Drone() {
-    super();
+	super();
   }
 
   public Drone(Long id) {
-    this.id = id;
+	this.id = id;
   }
 
   public Long getId() {
-    return id;
+	return id;
   }
 
   public void setId(Long id) {
-    this.id = id;
+	this.id = id;
   }
 
   public String getSerialNumber() {
-    return serialNumber;
+	return serialNumber;
   }
 
   public void setSerialNumber(String serialNumber) {
-    this.serialNumber = serialNumber;
+	this.serialNumber = serialNumber;
   }
 
   public DroneModel getModel() {
-    return model;
+	return model;
   }
 
   public void setModel(DroneModel model) {
-    this.model = model;
+	this.model = model;
   }
 
-  public Double getBatteryCurrentCapacity() {
-    return batteryCurrentCapacity;
+  public Float getBatteryLevel() {
+	return batteryLevel;
   }
 
-  public void setBatteryCurrentCapacity(Double batteryCurrentCapacity) {
-    this.batteryCurrentCapacity = batteryCurrentCapacity;
+  public void setBatteryLevel(Float batteryLevel) {
+	this.batteryLevel = batteryLevel;
   }
 
   public DroneState getCurrentState() {
-    return currentState;
+	return currentState;
   }
 
   public void setCurrentState(DroneState currentState) {
-    this.currentState = currentState;
+	this.currentState = currentState;
   }
 
 }
