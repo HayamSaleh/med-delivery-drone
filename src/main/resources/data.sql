@@ -12,6 +12,13 @@ VALUES ('serial_number1', 1),
 ('serial_number4', 4);
 
 
+INSERT INTO `medication`
+(`code`, `name`, `weight_grams`, `image`)
+VALUES ('MED001', 'Medication 1', 1.5, RAWTOHEX('MED001 image')),
+('MED002', 'Medication 2', 1.5, RAWTOHEX('MED002 image')),
+('MED003', 'Medication 2', 5, RAWTOHEX('MED003 image')),
+('MED004', 'Medication 2', 2, RAWTOHEX('MED004 image'));
+
 
 
 		

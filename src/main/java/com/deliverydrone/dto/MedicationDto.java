@@ -7,47 +7,47 @@ public class MedicationDto {
   private Long id;
   @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
   private String name;
-  private double weight;
+  private Double weightInGrams;
   private String code;
   private byte[] image;
 
   public Long getId() {
-    return id;
+	return id;
   }
 
   public void setId(Long id) {
-    this.id = id;
+	this.id = id;
   }
 
   public String getName() {
-    return name;
+	return name;
   }
 
   public void setName(String name) {
-    this.name = name;
+	this.name = name;
   }
 
-  public double getWeight() {
-    return weight;
+  public Double getWeightInGrams() {
+	return weightInGrams;
   }
 
-  public void setWeight(double weight) {
-    this.weight = weight;
+  public void setWeightInGrams(Double weightInGrams) {
+	this.weightInGrams = weightInGrams;
   }
 
   public String getCode() {
-    return code;
+	return code;
   }
 
   public void setCode(String code) {
-    this.code = code;
+	this.code = code;
   }
 
   public byte[] getImage() {
-    return image;
+	return image;
   }
 
   public void setImage(byte[] image) {
-    this.image = image;
+	this.image = image;
   }
 }

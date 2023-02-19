@@ -20,7 +20,7 @@ CREATE TABLE `medication` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(100) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`weight` FLOAT NOT NULL,
+	`weight_grams` FLOAT NOT NULL,
 	`image` BLOB NOT NULL,
 	PRIMARY KEY (id)
 --	UNIQUE KEY (code)
