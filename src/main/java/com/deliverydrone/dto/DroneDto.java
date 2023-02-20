@@ -1,6 +1,6 @@
 package com.deliverydrone.dto;
 
-import com.deliverydrone.enms.DroneState;
+import com.deliverydrone.enums.DroneState;
 
 public class DroneDto {
 

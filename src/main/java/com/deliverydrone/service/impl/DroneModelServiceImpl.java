@@ -33,7 +33,7 @@ public class DroneModelServiceImpl implements DroneModelService {
   }
 
   @Override
-  public DroneModelDto getDroneModelById(Long id) throws EntityNotFoundException {
+  public DroneModelDto getDroneModelById(Long id) {
 	DroneModel droneModel = droneModelRepository.findById(id)
 		.orElseThrow(() -> new EntityNotFoundException(DRONE_MODEL_NOT_FOUND));
 
@@ -42,7 +42,7 @@ public class DroneModelServiceImpl implements DroneModelService {
 
   @Override
   public DroneModelDto addDroneModel(DroneModelDto droneModelDto) {
-	if (droneModelRepository.existsByName(droneModelDto.getName())) {
+	if (!droneModelRepository.existsByName(droneModelDto.getName())) {
 	  return dozerMapper.map(droneModelRepository.save(dozerMapper.map(droneModelDto, DroneModel.class)),
 		  DroneModelDto.class);
 	}

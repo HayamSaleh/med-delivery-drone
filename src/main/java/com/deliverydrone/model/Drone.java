@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.deliverydrone.enms.DroneState;
+import com.deliverydrone.enums.DroneState;
 
 @Entity
 @Table(name = "drone")

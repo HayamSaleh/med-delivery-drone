@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.deliverydrone.enms.DeliveryState;
+import com.deliverydrone.enums.DeliveryState;
 
 @Entity
 @Table(name = "delivery")

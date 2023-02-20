@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.deliverydrone.controller.exception.DroneNotFoundException;
 import com.deliverydrone.controller.exception.NotAllowedRequestException;
 import com.deliverydrone.dto.DroneDto;
-import com.deliverydrone.enms.DroneState;
+import com.deliverydrone.enums.DroneState;
 import com.deliverydrone.model.Drone;
 import com.deliverydrone.model.DroneModel;
 import com.deliverydrone.repository.DroneRepository;

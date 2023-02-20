@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.deliverydrone.enms.DeliveryState;
+import com.deliverydrone.enums.DeliveryState;
 
 public class DeliveryDto {
 
@@ -24,16 +24,6 @@ public class DeliveryDto {
 	this.drone = drone;
 	this.deliveryState = deliveryState;
 	this.startTime = startTime;
-  }
-
-  public DeliveryDto(DroneDto drone, List<DeliveryMedicationDto> deliveryMedications, DeliveryState deliveryState,
-	  Date startTime) {
-	this(drone, deliveryState, startTime);
-	this.deliveryMedications = deliveryMedications;
-  }
-
-  public DeliveryDto(Long id) {
-	this.id = id;
   }
 
   public Long getId() {

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.deliverydrone.enms.DeliveryState;
+import com.deliverydrone.enums.DeliveryState;
 import com.deliverydrone.model.Delivery;
 import com.deliverydrone.model.DeliveryMedication;
 
