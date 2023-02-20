@@ -8,6 +8,7 @@ public class MedicationDto {
   @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
   private String name;
   private Float weightInGrams;
+  @Pattern(regexp = "^[A-Z0-9_]*$")
   private String code;
   private byte[] image;
 

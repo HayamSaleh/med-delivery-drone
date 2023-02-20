@@ -24,6 +24,7 @@ public class Medication {
   private Float weightInGrams;
 
   @Column(name = "code", unique = true, nullable = false)
+  @Pattern(regexp = "^[A-Z0-9_]*$")
   private String code;
 
   @Lob

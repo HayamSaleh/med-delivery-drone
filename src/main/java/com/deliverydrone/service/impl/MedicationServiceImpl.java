@@ -48,11 +48,16 @@ public class MedicationServiceImpl implements MedicationService {
   @Override
   public MedicationDto addMedication(MedicationDto medicationDto) {
 	String medicationCode = medicationDto.getCode();
+
 	if (medicationRepository.existsByCode(medicationCode)) {
 	  throw new EntityAlreadyExistsException(MEDICATION_WITH_SAME_CODE_EXISTS);
 	}
 
-	if (!medicationCode.matches(MEDICATION_COEE_PATTERN)) {
+	if (!medicationDto.getName().matches(MEDICATION_NAME_PATTERN)) {
+	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_NAME);
+	}
+
+	if (!medicationCode.matches(MEDICATION_CODE_PATTERN)) {
 	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_CODE);
 
 	}
@@ -63,16 +68,22 @@ public class MedicationServiceImpl implements MedicationService {
 
   @Override
   public MedicationDto updateMedication(MedicationDto medicationDto, Long id) {
-	Medication existingMedication = getMedicationEntityByID(id);
 	String updatedCode = medicationDto.getCode();
+
+	if (!updatedCode.matches(MEDICATION_CODE_PATTERN)) {
+	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_CODE);
+	}
+
+	if (!medicationDto.getName().matches(MEDICATION_NAME_PATTERN)) {
+	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_NAME);
+	}
+
+	Medication existingMedication = getMedicationEntityByID(id);
 	if (medicationRepository.existsByCode(updatedCode) && !existingMedication.getCode().equals(updatedCode)) {
 	  throw new EntityAlreadyExistsException(MEDICATION_WITH_SAME_CODE_EXISTS);
 	}
-	existingMedication.setCode(medicationDto.getCode());
-	existingMedication.setImage(medicationDto.getImage());
-	existingMedication.setName(medicationDto.getName());
-	existingMedication.setWeightInGrams(medicationDto.getWeightInGrams());
 
+	updateMedicationData(medicationDto, existingMedication);
 	return dozerMapper.map(medicationRepository.save(existingMedication), MedicationDto.class);
   }
 
@@ -89,6 +100,13 @@ public class MedicationServiceImpl implements MedicationService {
   @Override
   public List<Long> getValidMedicationByIdIn(List<Long> ids) {
 	return medicationRepository.findAllByIdIn(ids);
+  }
+
+  private void updateMedicationData(MedicationDto medicationDto, Medication existingMedication) {
+	existingMedication.setCode(medicationDto.getCode());
+	existingMedication.setImage(medicationDto.getImage());
+	existingMedication.setName(medicationDto.getName());
+	existingMedication.setWeightInGrams(medicationDto.getWeightInGrams());
   }
 
 }
