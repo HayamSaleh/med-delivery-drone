@@ -1,4 +1,0 @@
-4876 [scheduling-1] INFO  c.d.task.DroneBatteryCheckTask - Drone 1 with serial number serial_number1 battery level: 100 
-4876 [scheduling-1] INFO  c.d.task.DroneBatteryCheckTask - Drone 2 with serial number serial_number2 battery level: 100 
-4876 [scheduling-1] INFO  c.d.task.DroneBatteryCheckTask - Drone 3 with serial number serial_number3 battery level: 100 
-4876 [scheduling-1] INFO  c.d.task.DroneBatteryCheckTask - Drone 4 with serial number serial_number4 battery level: 100 
