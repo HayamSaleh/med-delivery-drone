@@ -22,7 +22,7 @@ For building and running the application you need:
 *Clone the repository*
 
 ```shell
-git clone https://github.com/your-username/drone-medication-delivery.git
+git clone https://github.com/HayamSaleh/med-delivery-drone.git
 ```
 
 *Build the application*
