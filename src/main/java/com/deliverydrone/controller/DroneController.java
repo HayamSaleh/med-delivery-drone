@@ -46,7 +46,7 @@ public class DroneController {
 
   @PostMapping()
   public ResponseEntity<DroneDto> registerDrone(@RequestBody DroneDto drone) {
-	return new ResponseEntity<>(droneService.addDrone(drone), HttpStatus.OK);
+	return new ResponseEntity<>(droneService.addDrone(drone), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

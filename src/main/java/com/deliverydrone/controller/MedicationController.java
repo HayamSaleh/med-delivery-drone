@@ -50,6 +50,6 @@ public class MedicationController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteMedication(@PathVariable Long id) {
 	medicationService.deleteMedication(id);
-	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	return new ResponseEntity<>(HttpStatus.OK);
   }
 }

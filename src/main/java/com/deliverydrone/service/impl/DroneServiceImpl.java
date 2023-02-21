@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deliverydrone.controller.exception.DroneNotFoundException;
+import com.deliverydrone.controller.exception.EntityAlreadyExistsException;
 import com.deliverydrone.controller.exception.NotAllowedRequestException;
 import com.deliverydrone.dto.DroneDto;
 import com.deliverydrone.enums.DroneState;
@@ -18,8 +19,6 @@ import com.deliverydrone.utils.MapperUtils;
 
 @Service
 public class DroneServiceImpl implements DroneService {
-
-  private static final String NOT_ALLOWED_DRONE_STATE = "Drone State %d is not allowed";
 
   @Autowired
   private DozerBeanMapper dozerMapper;
@@ -61,14 +60,23 @@ public class DroneServiceImpl implements DroneService {
 
   @Override
   public DroneDto addDrone(DroneDto droneDto) {
-	Drone savedDrone = droneRepository.save(dozerMapper.map(droneDto, Drone.class));
-	return dozerMapper.map(savedDrone, DroneDto.class);
+	if (droneRepository.existsBySerialNumber(droneDto.getSerialNumber())) {
+	  Drone savedDrone = droneRepository.save(dozerMapper.map(droneDto, Drone.class));
+	  return dozerMapper.map(savedDrone, DroneDto.class);
+	}
+
+	throw new EntityAlreadyExistsException(DRONE_WITH_SAME_SERIAL_NUMBER_EXISTS);
   }
 
   @Override
   public DroneDto updateDrone(DroneDto droneDto, Long id) {
 	Drone existingDrone = getDroneEntityByID(id);
-	existingDrone.setSerialNumber(droneDto.getSerialNumber());
+	String updatedSerialNumber = droneDto.getSerialNumber();
+	if (!existingDrone.getSerialNumber().equals(updatedSerialNumber)
+		&& droneRepository.existsBySerialNumber(updatedSerialNumber)) {
+	  throw new EntityAlreadyExistsException(DRONE_WITH_SAME_SERIAL_NUMBER_EXISTS);
+	}
+	existingDrone.setSerialNumber(updatedSerialNumber);
 	existingDrone.setBatteryLevel(droneDto.getBatteryLevel());
 	existingDrone.setCurrentState(droneDto.getCurrentState());
 	existingDrone.setModel(dozerMapper.map(droneDto.getModel(), DroneModel.class));
@@ -94,8 +102,13 @@ public class DroneServiceImpl implements DroneService {
   }
 
   @Override
+  public boolean existsById(Long droneId) {
+	return droneRepository.existsById(droneId);
+  }
+
+  @Override
   public boolean deleteDrone(Long id) {
-	if (droneRepository.existsById(id)) {
+	if (existsById(id)) {
 	  droneRepository.deleteById(id);
 	  return true;
 	}

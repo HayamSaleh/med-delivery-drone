@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.deliverydrone.controller.DeliveryController;
 import com.deliverydrone.dto.DeliveryDto;
 import com.deliverydrone.dto.DeliveryMedicationDto;
 import com.deliverydrone.service.DeliveryService;
@@ -28,7 +27,7 @@ class DeliveryControllerTest {
   private DeliveryService deliveryService;
 
   @Test
-  void testGetDeliveriesByDroneId() {
+  void getDeliveriesByDroneId_ValidDeliveryId_ReturnsDeliveryDtoList() {
 	List<DeliveryDto> deliveries = new ArrayList<>();
 	when(deliveryService.getDeliveriesByDroneId(id)).thenReturn(deliveries);
 
@@ -41,7 +40,7 @@ class DeliveryControllerTest {
   }
 
   @Test
-  void testGetDeliveryItemsByDroneId() {
+  void getDeliveryItemsByDroneId_ValidDeliveryId_ReturnsDeliveryMedicationDtoList() {
 	List<DeliveryMedicationDto> items = new ArrayList<>();
 	when(deliveryService.getDeliveryLoadByDroneId(id)).thenReturn(items);
 
@@ -54,7 +53,7 @@ class DeliveryControllerTest {
   }
 
   @Test
-  void testStartDeliveryById() {
+  void startDeliveryById_ValidDeliveryId_ReturnsConfirmationTrue() {
 	when(deliveryService.startDeliveryById(id)).thenReturn(true);
 
 	DeliveryController controller = new DeliveryController();
@@ -66,8 +65,8 @@ class DeliveryControllerTest {
   }
 
   @Test
-  void testMarkAsDeliveredById() {
-	when(deliveryService.markAsDeliveredById(id)).thenReturn(true);
+  void markAsDeliveredById_ValidDeliveryId_ReturnsConfirmationTrue() {
+	when(deliveryService.markAsDeliveredById(id)).thenReturn(false);
 
 	DeliveryController controller = new DeliveryController();
 	controller.deliveryService = deliveryService;

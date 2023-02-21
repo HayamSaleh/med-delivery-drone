@@ -38,29 +38,12 @@ public class MedicationServiceImpl implements MedicationService {
   }
 
   private Medication getMedicationEntityByID(Long id) {
-	Medication medication = medicationRepository.findById(id).orElse(null);
-	if (medication == null) {
-	  throw new MedicationNotFoundException(id);
-	}
-	return medication;
+	return medicationRepository.findById(id).orElseThrow(() -> new MedicationNotFoundException(id));
   }
 
   @Override
   public MedicationDto addMedication(MedicationDto medicationDto) {
-	String medicationCode = medicationDto.getCode();
-
-	if (medicationRepository.existsByCode(medicationCode)) {
-	  throw new EntityAlreadyExistsException(MEDICATION_WITH_SAME_CODE_EXISTS);
-	}
-
-	if (!medicationDto.getName().matches(MEDICATION_NAME_PATTERN)) {
-	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_NAME);
-	}
-
-	if (!medicationCode.matches(MEDICATION_CODE_PATTERN)) {
-	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_CODE);
-
-	}
+	validateMedicationData(medicationDto.getCode(), medicationDto.getName(), true);
 
 	Medication savedMedication = medicationRepository.save(dozerMapper.map(medicationDto, Medication.class));
 	return dozerMapper.map(savedMedication, MedicationDto.class);
@@ -69,14 +52,7 @@ public class MedicationServiceImpl implements MedicationService {
   @Override
   public MedicationDto updateMedication(MedicationDto medicationDto, Long id) {
 	String updatedCode = medicationDto.getCode();
-
-	if (!updatedCode.matches(MEDICATION_CODE_PATTERN)) {
-	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_CODE);
-	}
-
-	if (!medicationDto.getName().matches(MEDICATION_NAME_PATTERN)) {
-	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_NAME);
-	}
+	validateMedicationData(updatedCode, medicationDto.getName(), false);
 
 	Medication existingMedication = getMedicationEntityByID(id);
 	if (medicationRepository.existsByCode(updatedCode) && !existingMedication.getCode().equals(updatedCode)) {
@@ -85,6 +61,20 @@ public class MedicationServiceImpl implements MedicationService {
 
 	updateMedicationData(medicationDto, existingMedication);
 	return dozerMapper.map(medicationRepository.save(existingMedication), MedicationDto.class);
+  }
+
+  private void validateMedicationData(String medicationCode, String medicationName, boolean create) {
+	if (create && medicationRepository.existsByCode(medicationCode)) {
+	  throw new EntityAlreadyExistsException(MEDICATION_WITH_SAME_CODE_EXISTS);
+	}
+
+	if (!medicationCode.matches(MEDICATION_CODE_PATTERN)) {
+	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_CODE);
+	}
+
+	if (!medicationName.matches(MEDICATION_NAME_PATTERN)) {
+	  throw new NotAllowedRequestException(MEDICATION_WITH_INVALID_NAME);
+	}
   }
 
   @Override

@@ -3,6 +3,7 @@ package com.deliverydrone.controller.exception;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,28 +17,28 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+  private final Logger errorLogger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-  @ExceptionHandler(NotAllowedRequestException.class)
+  @ExceptionHandler({ NotAllowedRequestException.class, Exception.class })
   public ResponseEntity<ErrorDetails> handleNotAllowedRequestException(NotAllowedRequestException e,
 	  WebRequest request) {
 	ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
-	logger.error("Bad Request Exception: {}", e.getMessage());
+	errorLogger.error("Bad Request Exception: {}", e.getMessage());
 	return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler({ DroneNotFoundException.class, DeliveryNotFoundException.class,
-	  MedicationNotFoundException.class })
+  @ExceptionHandler({ DroneNotFoundException.class, DeliveryNotFoundException.class, MedicationNotFoundException.class,
+	  EntityNotFoundException.class })
   public ResponseEntity<ErrorDetails> handleNotFoundException(Exception e, WebRequest request) {
 	ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
-	logger.error("Not Found Exception: {}", e.getMessage());
+	errorLogger.error("Not Found Exception: {}", e.getMessage());
 	return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(EntityExistsException.class)
   public ResponseEntity<ErrorDetails> handleEntityExistsException(EntityExistsException e, WebRequest request) {
 	ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
-	logger.error("Expectation Failed Exception: {}", e.getMessage());
+	errorLogger.error("Expectation Failed Exception: {}", e.getMessage());
 	return new ResponseEntity<>(errorDetails, HttpStatus.EXPECTATION_FAILED);
   }
 
@@ -45,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorDetails> handleEntityAlreadyExistsException(EntityAlreadyExistsException e,
 	  WebRequest request) {
 	ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
-	logger.error("Conflict Exception: {}", e.getMessage());
+	errorLogger.error("Conflict Exception: {}", e.getMessage());
 	return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
   }
 

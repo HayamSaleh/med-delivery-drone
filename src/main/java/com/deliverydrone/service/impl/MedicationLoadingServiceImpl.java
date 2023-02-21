@@ -80,7 +80,7 @@ public class MedicationLoadingServiceImpl implements MedicationLoadingService {
 	Delivery delivery = deliveryRepository.findByDroneIdAndDeliveryState(droneId, DeliveryState.LOADING);
 
 	if (delivery == null || CollectionUtils.isEmpty(delivery.getDeliveryMedications())) {
-	  throw new NotAllowedRequestException(DeliveryService.EMPTY_DELIVERY);
+	  throw new NotAllowedRequestException(DeliveryService.EMPTY_OR_INVALID_DELIVERY);
 	}
 
 	delivery.setDeliveryState(DeliveryState.LOADED);
@@ -116,22 +116,16 @@ public class MedicationLoadingServiceImpl implements MedicationLoadingService {
 
   private List<DeliveryMedicationDto> getFilteredDeliveryMedications(DeliveryDto deliveryDto,
 	  List<DeliveryMedicationDto> deliveryMedications) {
-
 	List<Long> medicationIds = new ArrayList<>();
 	for (DeliveryMedicationDto deliveryMedication : deliveryMedications) {
-	  deliveryMedication.setDelivery(deliveryDto);
 	  medicationIds.add(deliveryMedication.getMedication().getId());
 	}
 
 	List<Long> validIds = medicationService.getValidMedicationByIdIn(medicationIds);
 
-	if (validIds.size() == medicationIds.size()) {
-	  return deliveryMedications;
-	}
-
 	return deliveryMedications.stream()
 		.filter(deliveryMedication -> validIds.contains(deliveryMedication.getMedication().getId()))
-		.collect(Collectors.toList());
+		.peek(deliveryMedication -> deliveryMedication.setDelivery(deliveryDto)).collect(Collectors.toList());
   }
 
   private boolean isDroneBatteryLevelSafeToBeLoaded(DroneDto droneDto) {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deliverydrone.controller.exception.DeliveryNotFoundException;
+import com.deliverydrone.controller.exception.DroneNotFoundException;
 import com.deliverydrone.dto.DeliveryDto;
 import com.deliverydrone.dto.DeliveryMedicationDto;
 import com.deliverydrone.dto.DroneDto;
@@ -37,13 +38,21 @@ public class DeliveryServiceImpl implements DeliveryService {
 
   @Override
   public List<DeliveryDto> getDeliveriesByDroneId(Long droneId) {
-	return mapperUtils.mapList(deliveryRepository.findByDroneId(droneId), DeliveryDto.class);
+	if (droneService.existsById(droneId)) {
+	  return mapperUtils.mapList(deliveryRepository.findByDroneId(droneId), DeliveryDto.class);
+	}
+
+	throw new DroneNotFoundException(droneId);
   }
 
   @Override
   public List<DeliveryMedicationDto> getDeliveryLoadByDroneId(Long droneId) {
-	List<DeliveryMedication> deliveryMedications = deliveryRepository.findDeliveryLoadByDroneId(droneId);
-	return mapperUtils.mapList(deliveryMedications, DeliveryMedicationDto.class);
+	if (droneService.existsById(droneId)) {
+	  List<DeliveryMedication> deliveryMedications = deliveryRepository.findDeliveryLoadByDroneId(droneId);
+	  return mapperUtils.mapList(deliveryMedications, DeliveryMedicationDto.class);
+	}
+
+	throw new DroneNotFoundException(droneId);
   }
 
   @Override
@@ -81,7 +90,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	  return true;
 	}
 
-	throw new IllegalStateException(EMPTY_DELIVERY);
+	throw new IllegalStateException(EMPTY_OR_INVALID_DELIVERY);
   }
 
   @Override

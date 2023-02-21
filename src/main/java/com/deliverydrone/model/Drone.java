@@ -21,7 +21,7 @@ public class Drone {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "serial_number", length = 100, nullable = false)
+  @Column(name = "serial_number", length = 100, nullable = false, unique = true)
   private String serialNumber;
 
   @ManyToOne
